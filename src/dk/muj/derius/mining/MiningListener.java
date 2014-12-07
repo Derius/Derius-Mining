@@ -46,11 +46,9 @@ public class MiningListener implements Listener
 		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
 			return;
 		
-		Bukkit.broadcastMessage("be earned"+skill.CanSkillBeUsedInArea(loc));
 		if(skill.CanSkillBeEarnedInArea(e.getBlock().getLocation()))
 			this.PlayerEarnExp(oreId, p);
 		
-		Bukkit.broadcastMessage("be used"+skill.CanSkillBeUsedInArea(loc));
 		if(skill.CanSkillBeUsedInArea(loc))
 			if(SkillUtil.PlayerGetDoubleDrop(MPlayer.get(p.getUniqueId().toString()), skill))
 				for(ItemStack is: b.getDrops())
