@@ -3,7 +3,6 @@ package dk.muj.derius.mining;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +16,7 @@ import com.massivecraft.massivecore.MassivePlugin;
 import dk.muj.derius.entity.MPlayer;
 import dk.muj.derius.mining.entity.MConf;
 import dk.muj.derius.skill.Skill;
+import dk.muj.derius.skill.SkillUtil;
 
 public class MiningListener implements Listener
 {
@@ -52,24 +52,12 @@ public class MiningListener implements Listener
 		
 		Bukkit.broadcastMessage("be used"+skill.CanSkillBeUsedInArea(loc));
 		if(skill.CanSkillBeUsedInArea(loc))
-			if(this.PlayerGetDoubleDrop(p))
+			if(SkillUtil.PlayerGetDoubleDrop(MPlayer.get(p.getUniqueId().toString()), skill))
 				for(ItemStack is: b.getDrops())
 					b.getWorld().dropItemNaturally(loc, is);
 
 	}
 	
-	private boolean PlayerGetDoubleDrop(Player p)
-	{
-		MPlayer mplayer = MPlayer.get(p.getUniqueId().toString());
-		int level = mplayer.getLvl(Const.ID);
-		double chance = level/10.0;
-		double random = (int) ((Math.random()*100)+1);
-		if(chance >= random)
-		{
-			return true;
-		}
-		return false;
-	}
 
 	private void PlayerEarnExp(int oreId, Player p)
 	{
@@ -77,6 +65,6 @@ public class MiningListener implements Listener
 			return;
 		int expGain = MConf.get().expGain.get(oreId);
 		MPlayer mplayer = MPlayer.get(p.getUniqueId().toString());
-		mplayer.AddExp(Const.ID, expGain);
+		mplayer.AddExp(DeriusMining.getMiningSkill(), expGain);
 	}
 }
