@@ -15,6 +15,6 @@ public class Const
 	// SKILL DATA
 	// -------------------------------------------- //
 	
-	public static final String ID = "d_mining";
+	public static final int ID = 1;
 	public static final String NAME = "Mining";
 }

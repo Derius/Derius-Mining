@@ -16,7 +16,7 @@ public class MiningSkill extends Skill
 	}
 	
 	@Override
-	public String getId() 
+	public int getId() 
 	{
 		return Const.ID;
 	}
@@ -44,8 +44,7 @@ public class MiningSkill extends Skill
 	{
 		List<String> list = new ArrayList<String>();
 		double doubleDropChance = lvl/10.0;
-		/*if(doubleDropChance <= 0.0)
-			doubleDropChance = 0.0;*/
+		
 		list.add("<i>Double drop: <yellow>"+doubleDropChance+"% chance to double drop");
 		return list;
 	}

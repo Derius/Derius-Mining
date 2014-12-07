@@ -22,7 +22,7 @@ public class DeriusMining extends MassivePlugin
 	// -------------------------------------------- //
 	
 	private static Skill miningSkill = new MiningSkill();
-	public static Skill getMiningSkill () {	return DeriusMining.miningSkill;	}
+	public static Skill getMiningSkill () {	return DeriusMining.miningSkill; }
 	
 	// -------------------------------------------- //
 	// LISTENERS

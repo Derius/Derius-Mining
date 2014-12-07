@@ -34,6 +34,7 @@ public class MiningListener implements Listener
 		Skill skill = DeriusMining.getMiningSkill();
 		
 		Block b = e.getBlock();
+		@SuppressWarnings("deprecation")
 		int oreId = b.getTypeId();
 		Player p = e.getPlayer();
 		ItemStack inHand = p.getItemInHand();
