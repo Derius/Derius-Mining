@@ -2,8 +2,8 @@ package dk.muj.derius.mining;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,15 +42,18 @@ public class MiningListener implements Listener
 		/*
 		if(!MUtil.isPickaxe(inHand))
 			return;*/
-		if(inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH))
+		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
 			return;
 		
+		Bukkit.broadcastMessage("be earned"+skill.CanSkillBeUsedInArea(loc));
 		if(skill.CanSkillBeEarnedInArea(e.getBlock().getLocation()))
 			this.PlayerEarnExp(oreId, p);
 		
+		Bukkit.broadcastMessage("be used"+skill.CanSkillBeUsedInArea(loc));
 		if(skill.CanSkillBeUsedInArea(loc))
 			if(this.PlayerGetDoubleDrop(p))
-				b.getDrops().addAll(b.getDrops());
+				for(ItemStack is: b.getDrops())
+					b.getWorld().dropItemNaturally(loc, is);
 
 	}
 	
@@ -60,8 +63,10 @@ public class MiningListener implements Listener
 		int level = mplayer.getLvl(Const.ID);
 		double chance = level/10.0;
 		double random = (int) ((Math.random()*100)+1);
-		if(level >= random)
+		if(chance >= random)
+		{
 			return true;
+		}
 		return false;
 	}
 
