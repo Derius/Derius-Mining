@@ -23,7 +23,6 @@ public class MiningListener implements Listener
 	MassivePlugin plugin;
 	public MiningListener(MassivePlugin plugin)
 	{
-		Bukkit.broadcastMessage("weird");
 		this.plugin = plugin;
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -34,14 +33,13 @@ public class MiningListener implements Listener
 		Skill skill = DeriusMining.getMiningSkill();
 		
 		Block b = e.getBlock();
-		@SuppressWarnings("deprecation")
 		int oreId = b.getTypeId();
 		Player p = e.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		Location loc = b.getLocation();
 		
-		/*
-		if(!MUtil.isPickaxe(inHand))
+		
+		/*if(!MUtil.isPickaxe(inHand))
 			return;*/
 		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
 			return;
@@ -49,10 +47,12 @@ public class MiningListener implements Listener
 		if(skill.CanSkillBeEarnedInArea(e.getBlock().getLocation()))
 			this.PlayerEarnExp(oreId, p);
 		
-		if(skill.CanSkillBeUsedInArea(loc))
-			if(SkillUtil.PlayerGetDoubleDrop(MPlayer.get(p.getUniqueId().toString()), skill))
-				for(ItemStack is: b.getDrops())
-					b.getWorld().dropItemNaturally(loc, is);
+		if(skill.CanSkillBeUsedInArea(loc) && MConf.get().doubleDropList.contains(oreId) && 
+				SkillUtil.PlayerGetDoubleDrop(MPlayer.get(p.getUniqueId().toString()), skill, 10))
+		{
+			for(ItemStack is: b.getDrops(inHand))
+				b.getWorld().dropItem(loc, is);
+		}
 
 	}
 	

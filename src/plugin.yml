@@ -2,6 +2,6 @@ name: Derius-Mining
 version: 0.1_dev
 main: dk.muj.derius.mining.DeriusMining
 #website: http://muj.dk/Derius/Mining
-authors: [madus]
+authors: [madus, ulumulu1510]
 description: §eDerius mining
 depend: [Derius-Core]

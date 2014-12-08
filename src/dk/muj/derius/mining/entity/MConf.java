@@ -1,5 +1,6 @@
 package dk.muj.derius.mining.entity;
 
+import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.massivecore.store.Entity;
@@ -17,6 +18,9 @@ public class MConf extends Entity<MConf>
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
+	
+	private int skillId = 10;
+	public int getSkillId() { return skillId; }
 	
 	// -------------------------------------------- //
 	// EXP GAIN
@@ -36,4 +40,12 @@ public class MConf extends Entity<MConf>
 			129,50,
 			153,50
 			);
+	
+	public List<Integer> doubleDropList = MUtil.list(
+			1, 14, 15, 16, 21, 56, 73, 74, 129, 153);
+	
+	
+	public double pickAxeDurability0 = 1;
+	public double pickAxeDurability1000 = 1;
+	public double pickAxeDurability2000 = 5;
 }

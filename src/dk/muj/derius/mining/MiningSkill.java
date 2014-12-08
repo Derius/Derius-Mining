@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.muj.derius.entity.MPlayer;
+import dk.muj.derius.mining.entity.MConf;
 import dk.muj.derius.skill.Skill;
 
 public class MiningSkill extends Skill
@@ -18,7 +19,7 @@ public class MiningSkill extends Skill
 	@Override
 	public int getId() 
 	{
-		return Const.ID;
+		return MConf.get().getSkillId();
 	}
 
 	@Override
