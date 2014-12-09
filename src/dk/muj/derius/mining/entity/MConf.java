@@ -22,6 +22,9 @@ public class MConf extends Entity<MConf>
 	private int skillId = 10;
 	public int getSkillId() { return skillId; }
 	
+	private int superMiningId = 11;
+	public int getSuperMiningId() { return superMiningId; }
+	
 	// -------------------------------------------- //
 	// EXP GAIN
 	// -------------------------------------------- //

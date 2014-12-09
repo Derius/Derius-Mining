@@ -2,6 +2,8 @@ package dk.muj.derius.mining;
 
 import com.massivecraft.massivecore.MassivePlugin;
 
+import dk.muj.derius.ability.Abilities;
+import dk.muj.derius.ability.Ability;
 import dk.muj.derius.mining.entity.MConfColl;
 import dk.muj.derius.skill.Skill;
 import dk.muj.derius.skill.Skills;
@@ -24,6 +26,9 @@ public class DeriusMining extends MassivePlugin
 	private static Skill miningSkill = new MiningSkill();
 	public static Skill getMiningSkill () {	return DeriusMining.miningSkill; }
 	
+	private static Ability superMining = new SuperMining();
+	public static Ability getSuperMining () { return DeriusMining.superMining; }
+	
 	// -------------------------------------------- //
 	// LISTENERS
 	// -------------------------------------------- //
@@ -35,9 +40,11 @@ public class DeriusMining extends MassivePlugin
 	{
 		super.preEnable();
 		
+		MConfColl.get().init();
+		
 		Skills.AddSkill(miningSkill);
 		
-		MConfColl.get().init();
+		Abilities.AddAbility(superMining);
 		
 		listener = new MiningListener(this);
 		

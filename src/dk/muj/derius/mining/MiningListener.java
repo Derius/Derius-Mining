@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.util.MUtil;
 
 import dk.muj.derius.entity.MPlayer;
 import dk.muj.derius.mining.entity.MConf;
@@ -39,8 +40,8 @@ public class MiningListener implements Listener
 		Location loc = b.getLocation();
 		
 		
-		/*if(!MUtil.isPickaxe(inHand))
-			return;*/
+		if(!MUtil.isPickaxe(inHand))
+			return;
 		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
 			return;
 		
