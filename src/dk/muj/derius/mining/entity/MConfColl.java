@@ -1,10 +1,9 @@
 package dk.muj.derius.mining.entity;
 
-import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.MStore;
 
-import dk.muj.derius.mining.Const;
+import dk.muj.derius.Const;
 import dk.muj.derius.mining.DeriusMining;
 
 public class MConfColl extends Coll<MConf>
@@ -29,6 +28,6 @@ public class MConfColl extends Coll<MConf>
 	public void init()
 	{
 		super.init();
-		MConf.i = this.get(MassiveCore.INSTANCE, true);
+		MConf.i = this.get("MiningSkill", true);
 	}
 }

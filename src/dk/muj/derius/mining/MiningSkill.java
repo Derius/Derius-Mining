@@ -1,53 +1,35 @@
 package dk.muj.derius.mining;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dk.muj.derius.entity.MPlayer;
 import dk.muj.derius.mining.entity.MConf;
 import dk.muj.derius.skill.Skill;
 
 public class MiningSkill extends Skill
 {
+	
+	private static MiningSkill i = new MiningSkill();
+	public static MiningSkill get() { return i; }
+	
+	
 	public MiningSkill()
 	{
-		this.addEarnExpDesc("Mine ores");
-		this.addPassiveAbilityDesc("Double drop", "Get twice as many ores");
-		this.addActiveAbilityDesc("Super Mining", "Destroy blocks faster & 3x drop");
+		super.addEarnExpDesc("Mine ores");
+		
+		super.setName("Mining");
+		
+		super.setDescription("Makes you better at mining");
 	}
-	
+
 	@Override
 	public int getId() 
 	{
-		return MConf.get().getSkillId();
-	}
-
-	@Override
-	public String getName() 
-	{
-		return Const.NAME;
-	}
-
-	@Override
-	public String getDesc() 
-	{
-		return "Makes you better at mining";
+		return MConf.get().getSuperMiningId();
 	}
 
 	@Override
 	public boolean CanPlayerLearnSkill(MPlayer p) 
 	{
 		return true;
-	}
-
-	@Override
-	public List<String> getAbilitiesDecriptionByLvl(int lvl) 
-	{
-		List<String> list = new ArrayList<String>();
-		double doubleDropChance = lvl/10.0;
-		
-		list.add("<i>Double drop: <yellow>"+doubleDropChance+"% chance to double drop");
-		return list;
 	}
 
 }

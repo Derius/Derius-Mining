@@ -14,8 +14,4 @@ public class Const
 	// -------------------------------------------- //
 	// SKILL DATA
 	// -------------------------------------------- //
-	
-	@Deprecated
-	public static final int ID = 1;
-	public static final String NAME = "Mining";
 }
