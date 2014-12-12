@@ -85,10 +85,10 @@ public class DoubleDrop extends Ability
 			return;
 		
 		if(skill.CanSkillBeEarnedInArea(p.getLocation()))
-			this.PlayerEarnExp(oreId, p);
+			this.PlayerEarnExp(oreId, mplayer);
 		
-		if(skill.CanSkillBeUsedInArea(loc) && MConf.get().expGain.containsKey(oreId) && 
-				SkillUtil.PlayerGetDoubleDrop(MPlayer.get(p.getUniqueId().toString()), skill, 10))
+		if(this.CanAbilityBeUsedInArea(loc) && MConf.get().expGain.containsKey(oreId) && 
+				SkillUtil.PlayerGetDoubleDrop(mplayer, skill, 10))
 		{
 			for(ItemStack is: b.getDrops(inHand))
 				b.getWorld().dropItem(loc, is);
@@ -96,12 +96,11 @@ public class DoubleDrop extends Ability
 		
 	}
 	
-	private void PlayerEarnExp(int oreId, Player p)
+	private void PlayerEarnExp(int oreId, MPlayer mplayer)
 	{
 		if(!MConf.get().expGain.containsKey(oreId))
 			return;
 		int expGain = MConf.get().expGain.get(oreId);
-		MPlayer mplayer = MPlayer.get(p.getUniqueId().toString());
 		mplayer.AddExp(MiningSkill.get(), expGain);
 	}
 

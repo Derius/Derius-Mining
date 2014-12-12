@@ -23,7 +23,7 @@ public class MiningSkill extends Skill
 	@Override
 	public int getId() 
 	{
-		return MConf.get().getSuperMiningId();
+		return MConf.get().getSkillId();
 	}
 
 	@Override
