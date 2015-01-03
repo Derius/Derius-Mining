@@ -1,6 +1,15 @@
 package dk.muj.derius.mining;
 
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.massivecraft.massivecore.util.Txt;
 
 import dk.muj.derius.ability.Ability;
 import dk.muj.derius.ability.AbilityType;
@@ -18,8 +27,6 @@ public class SuperMining extends Ability
 		super.setDescription("Mines faster");
 		
 		super.setName("Super Mining");
-		
-		this.addInteractKeys(MUtil.PICKAXE_MATERIALS);
 		
 		super.setType(AbilityType.ACTIVE);
 		
@@ -44,7 +51,7 @@ public class SuperMining extends Ability
 	}
 
 	@Override
-	public boolean CanPlayerActivateAbility(MPlayer p)
+	public boolean canPlayerActivateAbilityInner(MPlayer p)
 	{
 		return true;
 	}
@@ -58,14 +65,53 @@ public class SuperMining extends Ability
 	@Override
 	public void onActivate(MPlayer p, Object other)
 	{
-		// TODO Auto-generated method stub
+		if( ! p.isPlayer()) return;
+		Player player = p.getPlayer();
+		ItemStack inHand = player.getItemInHand();
+		if(inHand == null || inHand.getType() == Material.AIR) return;
 		
+		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+		if (lvlBefore < 0) lvlBefore = 0;
+		int lvl = lvlBefore + MConf.get().eficciencyBuff;
+		
+		ItemMeta meta = inHand.getItemMeta();
+		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
+		lore.add(Txt.parse("<lime>Derius Ability Tool"));
+
+		meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
+		
+		meta.setLore(lore);
+		inHand.setItemMeta(meta);
 	}
 
 	@Override
 	public void onDeactivate(MPlayer p)
 	{
-		// TODO Auto-generated method stub
+		if( ! p.isPlayer()) return;
+		Player player = p.getPlayer();
+		ItemStack inHand = player.getItemInHand();
+		if(inHand == null || inHand.getType() == Material.AIR) return;
+		
+		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+		if (lvlBefore < 0) lvlBefore = 0;
+		int lvl = lvlBefore - MConf.get().eficciencyBuff;
+		if(lvl < 0) lvl = 0;
+		
+		ItemMeta meta = inHand.getItemMeta();
+		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
+		lore.remove(Txt.parse("<lime>Derius Ability Tool"));
+
+		if(lvl == 0)
+		{
+			meta.removeEnchant(Enchantment.DIG_SPEED);
+		}
+		else
+		{
+			meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
+		}
+			
+		meta.setLore(lore);
+		inHand.setItemMeta(meta);
 	}
 
 

@@ -27,7 +27,7 @@ public class MiningSkill extends Skill
 	}
 
 	@Override
-	public boolean CanPlayerLearnSkill(MPlayer p) 
+	public boolean canPlayerLearnSkillInner(MPlayer p) 
 	{
 		return true;
 	}

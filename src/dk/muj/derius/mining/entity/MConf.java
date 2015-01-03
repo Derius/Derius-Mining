@@ -52,4 +52,6 @@ public class MConf extends Entity<MConf>
 	public double pickAxeDurability0 = 1;
 	public double pickAxeDurability1000 = 1;
 	public double pickAxeDurability2000 = 5;
+	
+	public int eficciencyBuff = 5;
 }

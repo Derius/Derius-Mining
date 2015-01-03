@@ -1,23 +1,17 @@
 package dk.muj.derius.mining;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.massivecraft.massivecore.util.MUtil;
 
 import dk.muj.derius.ability.Ability;
 import dk.muj.derius.ability.AbilityType;
 import dk.muj.derius.entity.MPlayer;
 import dk.muj.derius.mining.entity.MConf;
 import dk.muj.derius.skill.Skill;
-import dk.muj.derius.skill.SkillUtil;
+import dk.muj.derius.util.SkillUtil;
 
 public class DoubleDrop extends Ability
 {
@@ -29,11 +23,6 @@ public class DoubleDrop extends Ability
 		super.setDescription("Gives double drop");
 		
 		super.setName("Double Drop");
-		
-		List<Material> blockBreakKeys = new ArrayList<Material>();
-		for(int i : MConf.get().expGain.keySet())
-			blockBreakKeys.add(Material.getMaterial(i));
-		super.addBlockBreakKeys(blockBreakKeys);
 		
 		super.setType(AbilityType.PASSIVE);
 	}
@@ -57,7 +46,7 @@ public class DoubleDrop extends Ability
 	}
 
 	@Override
-	public boolean CanPlayerActivateAbility(MPlayer p)
+	public boolean canPlayerActivateAbilityInner(MPlayer p)
 	{
 		return true;
 	}
@@ -65,9 +54,7 @@ public class DoubleDrop extends Ability
 	@Override
 	public void onActivate(MPlayer mplayer, Object block)
 	{
-		if(!(block instanceof Block))
-			return;
-		if(!mplayer.isPlayer())
+		if( ! (block instanceof Block))
 			return;
 		
 		Skill skill = MiningSkill.get();
@@ -79,29 +66,17 @@ public class DoubleDrop extends Ability
 		Location loc = b.getLocation();
 		
 		
-		if(!MUtil.isPickaxe(inHand))
-			return;
+
 		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
 			return;
 		
-		if(skill.CanSkillBeEarnedInArea(p.getLocation()))
-			this.PlayerEarnExp(oreId, mplayer);
-		
-		if(this.CanAbilityBeUsedInArea(loc) && MConf.get().expGain.containsKey(oreId) && 
-				SkillUtil.PlayerGetDoubleDrop(mplayer, skill, 10))
+		if(MConf.get().expGain.containsKey(oreId) && 
+				SkillUtil.shouldPlayerGetDoubleDrop(mplayer, skill, 10))
 		{
 			for(ItemStack is: b.getDrops(inHand))
 				b.getWorld().dropItem(loc, is);
 		}
 		
-	}
-	
-	private void PlayerEarnExp(int oreId, MPlayer mplayer)
-	{
-		if(!MConf.get().expGain.containsKey(oreId))
-			return;
-		int expGain = MConf.get().expGain.get(oreId);
-		mplayer.AddExp(MiningSkill.get(), expGain);
 	}
 
 	@Override

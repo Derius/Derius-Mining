@@ -26,8 +26,7 @@ public class DeriusMining extends MassivePlugin
 		MiningSkill.get().register();
 		DoubleDrop.get().register();;
 		SuperMining.get().register();
-		
-		MConfColl.get().get("Mining", true);
+		new MiningListener();
 		
 		super.postEnable();
 	}
