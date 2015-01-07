@@ -1,6 +1,5 @@
 package dk.muj.derius.mining;
 
-import dk.muj.derius.entity.MPlayer;
 import dk.muj.derius.mining.entity.MConf;
 import dk.muj.derius.skill.Skill;
 
@@ -24,12 +23,6 @@ public class MiningSkill extends Skill
 	public int getId() 
 	{
 		return MConf.get().getSkillId();
-	}
-
-	@Override
-	public boolean canPlayerLearnSkillInner(MPlayer p) 
-	{
-		return true;
 	}
 
 }

@@ -42,13 +42,7 @@ public class DoubleDrop extends Ability
 	@Override
 	public String getLvlDescription(int lvl)
 	{
-		return "chance to double drop" + lvl/10.0 + "%";
-	}
-
-	@Override
-	public boolean canPlayerActivateAbilityInner(MPlayer p)
-	{
-		return true;
+		return "Chance to double drop" + lvl/10.0 + "%";
 	}
 
 	@Override

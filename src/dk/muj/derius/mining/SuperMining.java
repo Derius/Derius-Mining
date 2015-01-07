@@ -49,12 +49,6 @@ public class SuperMining extends Ability
 	{
 		return "Lasts "+this.getTicksLast(lvl)/20 + " seconds";
 	}
-
-	@Override
-	public boolean canPlayerActivateAbilityInner(MPlayer p)
-	{
-		return true;
-	}
 	
 	@Override
 	public int getCooldownTime(MPlayer p)
