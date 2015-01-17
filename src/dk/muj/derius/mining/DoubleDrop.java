@@ -1,5 +1,7 @@
 package dk.muj.derius.mining;
 
+import java.util.Optional;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -46,10 +48,10 @@ public class DoubleDrop extends Ability
 	}
 
 	@Override
-	public void onActivate(MPlayer mplayer, Object block)
+	public Optional<Object> onActivate(MPlayer mplayer, Object block)
 	{
 		if( ! (block instanceof Block))
-			return;
+			return Optional.empty();
 		
 		Skill skill = MiningSkill.get();
 		
@@ -62,7 +64,7 @@ public class DoubleDrop extends Ability
 		
 
 		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
-			return;
+			return Optional.empty();
 		
 		if(MConf.get().expGain.containsKey(oreId) && 
 				SkillUtil.shouldPlayerGetDoubleDrop(mplayer, skill, 10))
@@ -71,10 +73,11 @@ public class DoubleDrop extends Ability
 				b.getWorld().dropItem(loc, is);
 		}
 		
+		return Optional.empty();
 	}
 
 	@Override
-	public void onDeactivate(MPlayer p)
+	public void onDeactivate(MPlayer p, Optional<Object> other)
 	{
 		//There is no deactivate for this thing
 	}

@@ -2,6 +2,7 @@ package dk.muj.derius.mining;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -57,12 +58,12 @@ public class SuperMining extends Ability
 	}
 
 	@Override
-	public void onActivate(MPlayer p, Object other)
+	public Optional<Object> onActivate(MPlayer p, Object other)
 	{
-		if( ! p.isPlayer()) return;
+		if( ! p.isPlayer()) return Optional.empty();
 		Player player = p.getPlayer();
 		ItemStack inHand = player.getItemInHand();
-		if(inHand == null || inHand.getType() == Material.AIR) return;
+		if(inHand == null || inHand.getType() == Material.AIR) return Optional.empty();
 		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
 		if (lvlBefore < 0) lvlBefore = 0;
@@ -76,15 +77,17 @@ public class SuperMining extends Ability
 		
 		meta.setLore(lore);
 		inHand.setItemMeta(meta);
+		return Optional.of(inHand);
 	}
 
 	@Override
-	public void onDeactivate(MPlayer p)
+	public void onDeactivate(MPlayer p, Optional<Object> other)
 	{
 		if( ! p.isPlayer()) return;
-		Player player = p.getPlayer();
-		ItemStack inHand = player.getItemInHand();
-		if(inHand == null || inHand.getType() == Material.AIR) return;
+		if ( ! other.isPresent()) return;
+		Object obj = other.get();
+		if ( ! (obj instanceof ItemStack)) return;
+		ItemStack inHand = (ItemStack) obj;
 		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
 		if (lvlBefore < 0) lvlBefore = 0;
