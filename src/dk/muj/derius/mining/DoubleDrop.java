@@ -1,28 +1,25 @@
 package dk.muj.derius.mining;
 
-import java.util.Optional;
-
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import dk.muj.derius.ability.Ability;
-import dk.muj.derius.ability.AbilityType;
-import dk.muj.derius.entity.MPlayer;
-import dk.muj.derius.mining.entity.MConf;
-import dk.muj.derius.skill.Skill;
+import dk.muj.derius.api.DPlayer;
+import dk.muj.derius.api.Skill;
+import dk.muj.derius.entity.ability.DeriusAbility;
 import dk.muj.derius.util.SkillUtil;
 
-public class DoubleDrop extends Ability
+public class DoubleDrop extends DeriusAbility
 {
-    private static DoubleDrop i = new DoubleDrop();
+	private static DoubleDrop i = new DoubleDrop();
 	public static DoubleDrop get() { return i; }
 
 	public DoubleDrop()
 	{
-		super.setDescription("Gives double drop");
+		super.setDesc("Gives double drop");
 		
 		super.setName("Double Drop");
 		
@@ -36,49 +33,48 @@ public class DoubleDrop extends Ability
 	}
 	
 	@Override
-	public int getId()
+	public String getId()
 	{
-		return MConf.get().getDoubleDropId();
+		return "derius:mining:doubledrop";
 	}
 
 	@Override
-	public String getLvlDescription(int lvl)
+	public String getLvlDescriptionMsg(int lvl)
 	{
 		return "Chance to double drop" + lvl/10.0 + "%";
 	}
 
 	@Override
-	public Optional<Object> onActivate(MPlayer mplayer, Object block)
+	public Object onActivate(DPlayer dplayer, Object block)
 	{
-		if( ! (block instanceof Block))
-			return Optional.empty();
+		if ( ! (block instanceof Block)) return null;
 		
 		Skill skill = MiningSkill.get();
 		
 		Block b = (Block) block;
-		int oreId = b.getTypeId();
-		Player p = mplayer.getPlayer();
+		Material oreType = b.getType();
+		Player p = dplayer.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		Location loc = b.getLocation();
 		
 		
 
-		if(inHand.getItemMeta().hasEnchant(Enchantment.getById(33)))
-			return Optional.empty();
+		if (inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return null;
 		
-		if(MConf.get().expGain.containsKey(oreId) && 
-				SkillUtil.shouldPlayerGetDoubleDrop(mplayer, skill, 10))
+		if (MiningSkill.getExpGain().containsKey(oreType) && 
+				SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), 10))
 		{
 			for(ItemStack is: b.getDrops(inHand))
 				b.getWorld().dropItem(loc, is);
 		}
 		
-		return Optional.empty();
+		return null;
 	}
 
 	@Override
-	public void onDeactivate(MPlayer p, Optional<Object> other)
+	public void onDeactivate(DPlayer p, Object other)
 	{
 		//There is no deactivate for this thing
 	}
+
 }

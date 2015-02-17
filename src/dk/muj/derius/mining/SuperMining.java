@@ -1,6 +1,7 @@
 package dk.muj.derius.mining;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,22 +11,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.massivecraft.massivecore.util.TimeDiffUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-import dk.muj.derius.ability.Ability;
-import dk.muj.derius.ability.AbilityType;
-import dk.muj.derius.entity.MPlayer;
-import dk.muj.derius.mining.entity.MConf;
-import dk.muj.derius.skill.Skill;
+import dk.muj.derius.api.DPlayer;
+import dk.muj.derius.api.Skill;
+import dk.muj.derius.entity.ability.DeriusAbility;
 
-public class SuperMining extends Ability
+public class SuperMining extends DeriusAbility
 {
-    private static SuperMining i = new SuperMining();
+	private static SuperMining i = new SuperMining();
 	public static SuperMining get() { return i; }
 	
 	public SuperMining()
 	{
-		super.setDescription("Mines faster");
+		super.setDesc("Mines faster");
 		
 		super.setName("Super Mining");
 		
@@ -40,34 +41,34 @@ public class SuperMining extends Ability
 	}
 	
 	@Override
-	public int getId()
+	public String getId()
 	{
-		return MConf.get().getSuperMiningId();
+		return "derius:mining:supermining";
 	}
 
 	@Override
-	public String getLvlDescription(int lvl)
+	public String getLvlDescriptionMsg(int lvl)
 	{
-		return "Lasts "+this.getTicksLast(lvl)/20 + " seconds";
-	}
-	
-	@Override
-	public int getCooldownTime(MPlayer p)
-	{
-		return super.getCooldownTime(p);
+		int ticks = this.getDuration(lvl);
+		int millis = ticks*50;
+		
+		LinkedHashMap<TimeUnit, Long> durUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(millis, TimeUnit.getAllButMillis()), 3);
+		String durDesc = TimeDiffUtil.formatedVerboose(durUnitcounts, "<i>");
+		
+		return "<lime>Lasts " + durDesc;
 	}
 
 	@Override
-	public Optional<Object> onActivate(MPlayer p, Object other)
+	public Object onActivate(DPlayer p, Object other)
 	{
-		if( ! p.isPlayer()) return Optional.empty();
+		if ( ! p.isPlayer()) return Optional.empty();
 		Player player = p.getPlayer();
 		ItemStack inHand = player.getItemInHand();
-		if(inHand == null || inHand.getType() == Material.AIR) return Optional.empty();
+		if (inHand == null || inHand.getType() == Material.AIR) return Optional.empty();
 		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
 		if (lvlBefore < 0) lvlBefore = 0;
-		int lvl = lvlBefore + MConf.get().eficciencyBuff;
+		int lvl = lvlBefore + MiningSkill.getEfficiencyBuff();
 		
 		ItemMeta meta = inHand.getItemMeta();
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
@@ -81,40 +82,26 @@ public class SuperMining extends Ability
 	}
 
 	@Override
-	public void onDeactivate(MPlayer p, Optional<Object> other)
+	public void onDeactivate(DPlayer p, Object other)
 	{
-		if( ! p.isPlayer()) return;
-		if ( ! other.isPresent()) return;
-		Object obj = other.get();
-		if ( ! (obj instanceof ItemStack)) return;
-		ItemStack inHand = (ItemStack) obj;
+		if ( ! p.isPlayer()) return;
+		if ( ! (other instanceof ItemStack)) return;
+		ItemStack inHand = (ItemStack) other;
 		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
-		if (lvlBefore < 0) lvlBefore = 0;
-		int lvl = lvlBefore - MConf.get().eficciencyBuff;
-		if(lvl < 0) lvl = 0;
+		int lvl = lvlBefore - MiningSkill.getEfficiencyBuff();
+		if (lvl < 0) lvl = 0;
 		
 		ItemMeta meta = inHand.getItemMeta();
+		
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
 		lore.remove(Txt.parse("<lime>Derius Ability Tool"));
-
-		if(lvl == 0)
-		{
-			meta.removeEnchant(Enchantment.DIG_SPEED);
-		}
-		else
-		{
-			meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
-		}
-			
 		meta.setLore(lore);
+		
+		if (lvl == 0)	meta.removeEnchant(Enchantment.DIG_SPEED);
+		else			meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
+			
 		inHand.setItemMeta(meta);
 	}
-
-
-
-	
-
-	
 
 }

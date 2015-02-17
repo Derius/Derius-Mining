@@ -1,9 +1,15 @@
 package dk.muj.derius.mining;
 
-import dk.muj.derius.mining.entity.MConf;
-import dk.muj.derius.skill.Skill;
+import java.util.Map;
 
-public class MiningSkill extends Skill
+import org.bukkit.Material;
+
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+
+import dk.muj.derius.entity.skill.DeriusSkill;
+
+public class MiningSkill extends DeriusSkill
 {
 	
 	private static MiningSkill i = new MiningSkill();
@@ -12,17 +18,42 @@ public class MiningSkill extends Skill
 	
 	public MiningSkill()
 	{
-		super.addEarnExpDesc("Mine ores");
+		super.setEarnExpDescs(MUtil.list("Mine ores"));
 		
 		super.setName("Mining");
 		
-		super.setDescription("Makes you better at mining");
+		super.setDesc("Makes you better at mining");
+		
+		this.writeConfig(Const.JSON_EFFICIENCY_BUFF, 5);
+		this.writeConfig(Const.JSON_EXP_GAIN, MUtil.map(
+			Material.STONE, 10,
+			Material.GOLD_ORE, 50,
+			Material.IRON_ORE, 50,
+			Material.COAL_ORE, 50,
+			Material.LAPIS_ORE, 50,
+			Material.DIAMOND_ORE, 100,
+			Material.REDSTONE_ORE, 50,
+			Material.GLOWING_REDSTONE_ORE, 50,
+			Material.EMERALD_ORE, 50,
+			Material.QUARTZ_ORE, 50
+			), new TypeToken<Map<Material, Integer>>(){});
 	}
 
 	@Override
-	public int getId() 
+	public String getId() 
 	{
-		return MConf.get().getSkillId();
+		return "derius:mining";
+	}
+	
+	
+	public static int getEfficiencyBuff()
+	{
+		return get().readConfig(Const.JSON_EFFICIENCY_BUFF, Integer.TYPE);
+	}
+	
+	public static Map<Material, Integer> getExpGain()
+	{
+		return get().readConfig(Const.JSON_EXP_GAIN, new TypeToken<Map<Material, Integer>>(){});
 	}
 
 }
