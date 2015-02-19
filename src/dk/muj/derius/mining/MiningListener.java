@@ -1,7 +1,6 @@
 package dk.muj.derius.mining;
 
-import java.util.Optional;
-
+import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +15,7 @@ import dk.muj.derius.util.Listener;
 public class MiningListener implements Listener
 {
 	// -------------------------------------------- //
-	// CONSTRUCT
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
 	private static MiningListener i = new MiningListener();
@@ -24,7 +23,6 @@ public class MiningListener implements Listener
 	
 	public MiningListener()
 	{
-		i = this;
 		Listener.registerBlockBreakKeys(this, MiningSkill.getExpGain().keySet());
 		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
 		DeriusCore.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
@@ -37,21 +35,22 @@ public class MiningListener implements Listener
 	@Override
 	public void onBlockBreak(DPlayer dplayer, BlockState block)
 	{
+		Validate.notNull(dplayer, "dplayer musn't be null");
+		Validate.notNull(block, "block musn't be null");
 		if ( ! dplayer.isPlayer()) return;
 		Player player = dplayer.getPlayer();
 		ItemStack inHand = player.getItemInHand();
-		if (!MUtil.isPickaxe(inHand))
-			return;
+		if ( ! MUtil.isPickaxe(inHand)) return;
 		
 		if (DeriusCore.getBlockMixin().isBlockPlacedByPlayer(block.getBlock())) return;
 		
-		if ( ! dplayer.getPreparedTool().equals(Optional.empty()) && MUtil.PICKAXE_MATERIALS.contains(dplayer.getPreparedTool().get()))
+		if (dplayer.getPreparedTool().isPresent() && MUtil.PICKAXE_MATERIALS.contains(dplayer.getPreparedTool().get()))
 		{
 			AbilityUtil.activateAbility(dplayer, SuperMining.get(), null, true);
 		}
 		
 		Integer exp = MiningSkill.getExpGain().get(block.getType());
-		if ( exp != null)
+		if (exp != null)
 		{
 			dplayer.addExp(MiningSkill.get(), exp);
 		}

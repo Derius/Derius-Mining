@@ -13,7 +13,10 @@ public class DeriusMining extends MassivePlugin
 	public static DeriusMining get() { return i; }
 	public DeriusMining() { i = this; }
 	
-
+	// -------------------------------------------- //
+	// OVERRIDE: PLUGIN
+	// -------------------------------------------- //
+	
 	@Override
 	public void onEnable()
 	{

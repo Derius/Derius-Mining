@@ -7,6 +7,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import dk.muj.derius.DeriusCore;
 import dk.muj.derius.api.DPlayer;
 import dk.muj.derius.api.Skill;
 import dk.muj.derius.entity.ability.DeriusAbility;
@@ -14,6 +15,10 @@ import dk.muj.derius.util.SkillUtil;
 
 public class DoubleDrop extends DeriusAbility
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
 	private static DoubleDrop i = new DoubleDrop();
 	public static DoubleDrop get() { return i; }
 
@@ -25,6 +30,10 @@ public class DoubleDrop extends DeriusAbility
 		
 		super.setType(AbilityType.PASSIVE);
 	}
+	
+	// -------------------------------------------- //
+	// OIVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public Skill getSkill()
@@ -41,31 +50,35 @@ public class DoubleDrop extends DeriusAbility
 	@Override
 	public String getLvlDescriptionMsg(int lvl)
 	{
-		return "Chance to double drop" + lvl/10.0 + "%";
+		return "<g>Chance to double drop: <h>" + (double) lvl/MiningSkill.getLevelsPerPercent() + "%";
 	}
 
 	@Override
-	public Object onActivate(DPlayer dplayer, Object block)
+	public Object onActivate(DPlayer dplayer, Object obj)
 	{
-		if ( ! (block instanceof Block)) return null;
+		if (dplayer == null) return null;
+		if ( ! (obj instanceof Block)) return null;
+		if ( ! dplayer.isPlayer()) return null;
 		
 		Skill skill = MiningSkill.get();
 		
-		Block b = (Block) block;
-		Material oreType = b.getType();
-		Player p = dplayer.getPlayer();
-		ItemStack inHand = p.getItemInHand();
-		Location loc = b.getLocation();
+		Block block = (Block) obj;
+		Material oreType = block.getType();
+		Player player = dplayer.getPlayer();
+		ItemStack inHand = player.getItemInHand();
+		Location blockLoc = block.getLocation();
 		
 		
 
 		if (inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return null;
+		if (DeriusCore.getBlockMixin().isBlockPlacedByPlayer(blockLoc)) return null;
 		
-		if (MiningSkill.getExpGain().containsKey(oreType) && 
-				SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), 10))
+		if (MiningSkill.getExpGain().containsKey(oreType) && SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), MiningSkill.getLevelsPerPercent()))
 		{
-			for(ItemStack is: b.getDrops(inHand))
-				b.getWorld().dropItem(loc, is);
+			for(ItemStack item: block.getDrops(inHand))
+			{
+				block.getWorld().dropItem(blockLoc, item);
+			}
 		}
 		
 		return null;

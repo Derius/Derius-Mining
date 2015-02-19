@@ -11,6 +11,9 @@ import dk.muj.derius.entity.skill.DeriusSkill;
 
 public class MiningSkill extends DeriusSkill
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
 	private static MiningSkill i = new MiningSkill();
 	public static MiningSkill get() { return i; }
@@ -18,13 +21,14 @@ public class MiningSkill extends DeriusSkill
 	
 	public MiningSkill()
 	{
-		super.setEarnExpDescs(MUtil.list("Mine ores"));
+		this.setEarnExpDescs(MUtil.list("Mine ores"));
 		
-		super.setName("Mining");
+		this.setName("Mining");
 		
-		super.setDesc("Makes you better at mining");
+		this.setDesc("Makes you better at mining");
 		
 		this.writeConfig(Const.JSON_EFFICIENCY_BUFF, 5);
+		this.writeConfig(Const.JSON_LEVELS_PER_PERCENT, 10);
 		this.writeConfig(Const.JSON_EXP_GAIN, MUtil.map(
 			Material.STONE, 10,
 			Material.GOLD_ORE, 50,
@@ -38,6 +42,10 @@ public class MiningSkill extends DeriusSkill
 			Material.QUARTZ_ORE, 50
 			), new TypeToken<Map<Material, Integer>>(){});
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 
 	@Override
 	public String getId() 
@@ -45,10 +53,18 @@ public class MiningSkill extends DeriusSkill
 		return "derius:mining";
 	}
 	
+	// -------------------------------------------- //
+	// CONFIG
+	// -------------------------------------------- //
 	
 	public static int getEfficiencyBuff()
 	{
 		return get().readConfig(Const.JSON_EFFICIENCY_BUFF, Integer.TYPE);
+	}
+	
+	public static int getLevelsPerPercent()
+	{
+		return get().readConfig(Const.JSON_LEVELS_PER_PERCENT, Integer.TYPE);
 	}
 	
 	public static Map<Material, Integer> getExpGain()
