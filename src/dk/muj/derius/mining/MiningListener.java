@@ -7,8 +7,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-import dk.muj.derius.DeriusCore;
 import dk.muj.derius.api.DPlayer;
+import dk.muj.derius.api.DeriusAPI;
+import dk.muj.derius.api.VerboseLevel;
 import dk.muj.derius.util.AbilityUtil;
 import dk.muj.derius.util.Listener;
 
@@ -25,7 +26,7 @@ public class MiningListener implements Listener
 	{
 		Listener.registerBlockBreakKeys(this, MiningSkill.getExpGain().keySet());
 		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
-		DeriusCore.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
+		DeriusAPI.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
 	}
 	
 	// -------------------------------------------- //
@@ -42,11 +43,11 @@ public class MiningListener implements Listener
 		ItemStack inHand = player.getItemInHand();
 		if ( ! MUtil.isPickaxe(inHand)) return;
 		
-		if (DeriusCore.getBlockMixin().isBlockPlacedByPlayer(block.getBlock())) return;
+		if (DeriusAPI.isBlockPlacedByPlayer(block.getBlock())) return;
 		
 		if (dplayer.getPreparedTool().isPresent() && MUtil.PICKAXE_MATERIALS.contains(dplayer.getPreparedTool().get()))
 		{
-			AbilityUtil.activateAbility(dplayer, SuperMining.get(), null, true);
+			AbilityUtil.activateAbility(dplayer, SuperMining.get(), null, VerboseLevel.LOW);
 		}
 		
 		Integer exp = MiningSkill.getExpGain().get(block.getType());
@@ -55,7 +56,7 @@ public class MiningListener implements Listener
 			dplayer.addExp(MiningSkill.get(), exp);
 		}
 		
-		AbilityUtil.activateAbility(dplayer, DoubleDrop.get(), block, true);
+		AbilityUtil.activateAbility(dplayer, DoubleDrop.get(), block, VerboseLevel.HIGH);
 
 	}
 

@@ -7,8 +7,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import dk.muj.derius.DeriusCore;
 import dk.muj.derius.api.DPlayer;
+import dk.muj.derius.api.DeriusAPI;
 import dk.muj.derius.api.Skill;
 import dk.muj.derius.entity.ability.DeriusAbility;
 import dk.muj.derius.util.SkillUtil;
@@ -50,7 +50,7 @@ public class DoubleDrop extends DeriusAbility
 	@Override
 	public String getLvlDescriptionMsg(int lvl)
 	{
-		return "<g>Chance to double drop: <h>" + (double) lvl/MiningSkill.getLevelsPerPercent() + "%";
+		return "<i>Chance to double drop: <h>" + (double) lvl/MiningSkill.getLevelsPerPercent() + "%";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class DoubleDrop extends DeriusAbility
 		
 
 		if (inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return null;
-		if (DeriusCore.getBlockMixin().isBlockPlacedByPlayer(blockLoc)) return null;
+		if (DeriusAPI.isBlockPlacedByPlayer(block)) return null;
 		
 		if (MiningSkill.getExpGain().containsKey(oreType) && SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), MiningSkill.getLevelsPerPercent()))
 		{

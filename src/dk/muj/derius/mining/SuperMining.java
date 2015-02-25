@@ -55,7 +55,7 @@ public class SuperMining extends DeriusAbility
 		LinkedHashMap<TimeUnit, Long> durUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(millis, TimeUnit.getAllButMillis()), 3);
 		String durDesc = TimeDiffUtil.formatedVerboose(durUnitcounts, "<i>");
 		
-		return "<g>Lasts " + durDesc;
+		return "<i>Lasts " + durDesc;
 	}
 
 	@Override
