@@ -5,3 +5,4 @@ main: dk.muj.derius.mining.DeriusMining
 authors: [madus, ulumulu1510]
 description: §eDerius mining
 depend: [Derius-Core]
+load: startup

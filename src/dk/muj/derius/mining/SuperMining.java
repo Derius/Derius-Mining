@@ -3,7 +3,6 @@ package dk.muj.derius.mining;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -49,22 +48,25 @@ public class SuperMining extends DeriusAbility
 	@Override
 	public String getLvlDescriptionMsg(int lvl)
 	{
-		int ticks = this.getDuration(lvl);
-		int millis = ticks*50;
+		int millis = this.getDurationMillis(lvl);
 		
-		LinkedHashMap<TimeUnit, Long> durUnitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(millis, TimeUnit.getAllButMillis()), 3);
-		String durDesc = TimeDiffUtil.formatedVerboose(durUnitcounts, "<i>");
+		LinkedHashMap<TimeUnit, Long> unitcounts = TimeDiffUtil.limit(TimeDiffUtil.unitcounts(millis, TimeUnit.getAllButMillis()), 3);
 		
-		return "<i>Lasts " + durDesc;
+		String entry = Txt.parse("<v>%1$d <k>%3$s");
+		String comma = TimeDiffUtil.FORMAT_COMMA_VERBOOSE;
+		String and = TimeDiffUtil.FORMAT_AND_VERBOOSE;
+		String durationDesc = TimeDiffUtil.formated(unitcounts, entry, comma, and, "<yellow>");
+		
+		return "<i>Lasts " + durationDesc;
 	}
 
 	@Override
 	public Object onActivate(DPlayer p, Object other)
 	{
-		if ( ! p.isPlayer()) return Optional.empty();
+		if ( ! p.isPlayer()) return null;
 		Player player = p.getPlayer();
 		ItemStack inHand = player.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) return Optional.empty();
+		if (inHand == null || inHand.getType() == Material.AIR) return null;
 		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
 		if (lvlBefore < 0) lvlBefore = 0;
@@ -78,7 +80,7 @@ public class SuperMining extends DeriusAbility
 		
 		meta.setLore(lore);
 		inHand.setItemMeta(meta);
-		return Optional.of(inHand);
+		return inHand;
 	}
 
 	@Override

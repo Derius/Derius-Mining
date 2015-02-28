@@ -1,10 +1,13 @@
 package dk.muj.derius.mining;
 
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.util.MUtil;
+
+import dk.muj.derius.api.DeriusAPI;
+import dk.muj.derius.util.Listener;
 
 public class DeriusMining extends MassivePlugin
 {
-
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -26,7 +29,11 @@ public class DeriusMining extends MassivePlugin
 		DoubleDrop.get().register();
 		SuperMining.get().register();
 		
-		MiningListener.get();
+		MiningEngine.get().activate();
+		
+		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
+		DeriusAPI.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
+		
 		
 		super.postEnable();
 	}

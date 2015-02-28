@@ -24,11 +24,10 @@ public class DoubleDrop extends DeriusAbility
 
 	public DoubleDrop()
 	{
-		super.setDesc("Gives double drop");
+		this.setDesc("Gives double drop");
+		this.setName("Double Drop");
 		
-		super.setName("Double Drop");
-		
-		super.setType(AbilityType.PASSIVE);
+		this.setType(AbilityType.PASSIVE);
 	}
 	
 	// -------------------------------------------- //
@@ -50,7 +49,8 @@ public class DoubleDrop extends DeriusAbility
 	@Override
 	public String getLvlDescriptionMsg(int lvl)
 	{
-		return "<i>Chance to double drop: <h>" + (double) lvl/MiningSkill.getLevelsPerPercent() + "%";
+		double percent = Math.max(100.0, (double) lvl/MiningSkill.getLevelsPerPercent());
+		return "<i>Chance to double drop: <h>" + String.valueOf(percent) + "%";
 	}
 
 	@Override
@@ -67,8 +67,6 @@ public class DoubleDrop extends DeriusAbility
 		Player player = dplayer.getPlayer();
 		ItemStack inHand = player.getItemInHand();
 		Location blockLoc = block.getLocation();
-		
-		
 
 		if (inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return null;
 		if (DeriusAPI.isBlockPlacedByPlayer(block)) return null;
@@ -81,7 +79,7 @@ public class DoubleDrop extends DeriusAbility
 			}
 		}
 		
-		return null;
+		return obj;
 	}
 
 	@Override
