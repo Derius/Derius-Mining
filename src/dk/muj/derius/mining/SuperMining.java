@@ -61,10 +61,10 @@ public class SuperMining extends DeriusAbility
 	}
 
 	@Override
-	public Object onActivate(DPlayer p, Object other)
+	public Object onActivate(DPlayer dplayer, Object other)
 	{
-		if ( ! p.isPlayer()) return null;
-		Player player = p.getPlayer();
+		if ( ! dplayer.isPlayer()) return null;
+		Player player = dplayer.getPlayer();
 		ItemStack inHand = player.getItemInHand();
 		if (inHand == null || inHand.getType() == Material.AIR) return null;
 		
@@ -80,30 +80,43 @@ public class SuperMining extends DeriusAbility
 		
 		meta.setLore(lore);
 		inHand.setItemMeta(meta);
-		return inHand;
+		player.updateInventory();
+		return player.getItemInHand();
 	}
 
 	@Override
-	public void onDeactivate(DPlayer p, Object other)
+	public void onDeactivate(DPlayer dplayer, Object other)
 	{
-		if ( ! p.isPlayer()) return;
-		if ( ! (other instanceof ItemStack)) return;
+		dplayer.msg("deactivate start");
+		if ( ! dplayer.isPlayer()) throw new RuntimeException("isn't player");
+		if ( ! (other instanceof ItemStack)) throw new RuntimeException("isn't itemstack");
 		ItemStack inHand = (ItemStack) other;
 		
+		dplayer.msg(String.valueOf(inHand == dplayer.getPlayer().getItemInHand()));
+		
 		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+		dplayer.msg("lvlBefore:" + String.valueOf(lvlBefore));
+		dplayer.msg("buff:" + String.valueOf(MiningSkill.getEfficiencyBuff()));
 		int lvl = lvlBefore - MiningSkill.getEfficiencyBuff();
+		dplayer.msg("lvl:" + String.valueOf(lvl));
 		if (lvl < 0) lvl = 0;
+		dplayer.msg("lvl:" + String.valueOf(lvl));
+		
 		
 		ItemMeta meta = inHand.getItemMeta();
-		
+		dplayer.msg("meta:" + String.valueOf(meta));
 		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
 		lore.remove(Txt.parse("<lime>Derius Ability Tool"));
 		meta.setLore(lore);
 		
-		if (lvl == 0)	meta.removeEnchant(Enchantment.DIG_SPEED);
-		else			meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
-			
+		meta.removeEnchant(Enchantment.DIG_SPEED);
+		if (lvl > 0) meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
+		
+		
+		dplayer.msg("meta:" + String.valueOf(meta));
 		inHand.setItemMeta(meta);
+		dplayer.getPlayer().updateInventory();
+		dplayer.msg("deactivate end");
 	}
 
 }
