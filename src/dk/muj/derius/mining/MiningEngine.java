@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -80,6 +81,15 @@ public class MiningEngine extends EngineAbstract
 		}
 		
 		return;
+	}
+	
+	public void changeDurability(PlayerItemDamageEvent event)
+	{
+		ItemStack item = event.getItem();
+		if ( ! MUtil.isPickaxe(item)) return;
+		DPlayer dplayer = DeriusAPI.getDPlayer(event.getPlayer());
+		AbilityUtil.activateAbility(dplayer, CarefulMining.get(), event, VerboseLevel.ALWAYS);
+		
 	}
 	
 }

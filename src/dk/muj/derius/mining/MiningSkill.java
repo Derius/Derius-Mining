@@ -25,7 +25,7 @@ public class MiningSkill extends DeriusSkill
 		this.setName("Mining");
 		this.setDesc("Makes you better at mining");
 		this.setIcon(Material.DIAMOND_PICKAXE);
-		this.setEarnExpDescs(MUtil.list("Mine ores"));
+		this.addEarnExpDescs("Mine ores");
 		
 		Map<Material, Integer> expMap = MUtil.map(
 			Material.STONE, 10,
@@ -45,6 +45,10 @@ public class MiningSkill extends DeriusSkill
 		this.writeConfig(Const.JSON_EXP_GAIN, expMap, new TypeToken<Map<Material, Integer>>(){});
 		this.writeConfig(Const.JSON_DOUBLE_DROP_BLOCKS, expMap.keySet(), new TypeToken<Set<Material>>(){});
 		this.writeConfig(Const.JSON_SUPER_MINING_BLOCKS, expMap.keySet(), new TypeToken<Set<Material>>(){});
+		this.writeConfig(Const.JSON_CAREFUL_MINING, MUtil.map(
+				0, 0.5,
+				1000, 1.5,
+				2000, 3.0), new TypeToken<Map<Integer, Double>>(){});
 	}
 	
 	// -------------------------------------------- //
@@ -84,6 +88,11 @@ public class MiningSkill extends DeriusSkill
 	public static Set<Material>getSuperMiningBlocks()
 	{
 		return get().readConfig(Const.JSON_SUPER_MINING_BLOCKS, new TypeToken<Set<Material>>(){});
+	}
+	
+	public static Map<Integer, Double> getDurabilityMultiplier()
+	{
+		return get().readConfig(Const.JSON_CAREFUL_MINING, new TypeToken<Map<Integer, Double>>(){});
 	}
 
 }

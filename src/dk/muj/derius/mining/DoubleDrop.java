@@ -3,7 +3,6 @@ package dk.muj.derius.mining;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,10 +27,11 @@ public class DoubleDrop extends DeriusAbility
 		this.setName("Double Drop");
 		
 		this.setType(AbilityType.PASSIVE);
+		this.setCooldownMillis(-1);
 	}
 	
 	// -------------------------------------------- //
-	// OIVERRIDE
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -49,7 +49,7 @@ public class DoubleDrop extends DeriusAbility
 	@Override
 	public String getLvlDescriptionMsg(int lvl)
 	{
-		double percent = Math.max(100.0, (double) lvl/MiningSkill.getLevelsPerPercent());
+		double percent = Math.min(100.0, (double) lvl/MiningSkill.getLevelsPerPercent());
 		return "<i>Chance to double drop: <h>" + String.valueOf(percent) + "%";
 	}
 
@@ -68,22 +68,20 @@ public class DoubleDrop extends DeriusAbility
 		ItemStack inHand = player.getItemInHand();
 		Location blockLoc = block.getLocation();
 
-		if (inHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) return null;
 		if (DeriusAPI.isBlockPlacedByPlayer(block)) return null;
+		if ( ! MiningSkill.getExpGain().containsKey(oreType)) return null;
+		if ( ! SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), MiningSkill.getLevelsPerPercent())) return null;
 		
-		if (MiningSkill.getExpGain().containsKey(oreType) && SkillUtil.shouldDoubleDropOccur(dplayer.getLvl(skill), MiningSkill.getLevelsPerPercent()))
+		for(ItemStack item: block.getDrops(inHand))
 		{
-			for(ItemStack item: block.getDrops(inHand))
-			{
-				block.getWorld().dropItem(blockLoc, item);
-			}
+			block.getWorld().dropItem(blockLoc, item);
 		}
 		
 		return obj;
 	}
 
 	@Override
-	public void onDeactivate(DPlayer p, Object other)
+	public void onDeactivate(DPlayer dplayer, Object other)
 	{
 		//There is no deactivate for this thing
 	}

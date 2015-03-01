@@ -1,14 +1,10 @@
 package dk.muj.derius.mining;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
@@ -17,21 +13,37 @@ import com.massivecraft.massivecore.util.Txt;
 import dk.muj.derius.api.DPlayer;
 import dk.muj.derius.api.Skill;
 import dk.muj.derius.entity.ability.DeriusAbility;
+import dk.muj.derius.req.ReqCooldownIsExpired;
 
 public class SuperMining extends DeriusAbility
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
 	private static SuperMining i = new SuperMining();
 	public static SuperMining get() { return i; }
 	
 	public SuperMining()
 	{
-		super.setDesc("Mines faster");
+		this.setDesc("Mines faster");
 		
-		super.setName("Super Mining");
+		this.setName("Super Mining");
 		
-		super.setType(AbilityType.ACTIVE);
+		this.setType(AbilityType.ACTIVE);
 		
+		this.addActivateRequirements(ReqCooldownIsExpired.get());
 	}
+	
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final String ACTIVATED_LORE_TAG = Txt.parse("<lime>SuperMining Pickaxe");
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public Skill getSkill()
@@ -68,18 +80,8 @@ public class SuperMining extends DeriusAbility
 		ItemStack inHand = player.getItemInHand();
 		if (inHand == null || inHand.getType() == Material.AIR) return null;
 		
-		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
-		if (lvlBefore < 0) lvlBefore = 0;
-		int lvl = lvlBefore + MiningSkill.getEfficiencyBuff();
+		SuperMiningItemManager.get().toSpecial(inHand);
 		
-		ItemMeta meta = inHand.getItemMeta();
-		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
-		lore.add(Txt.parse("<lime>Derius Ability Tool"));
-
-		meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
-		
-		meta.setLore(lore);
-		inHand.setItemMeta(meta);
 		player.updateInventory();
 		return player.getItemInHand();
 	}
@@ -87,36 +89,13 @@ public class SuperMining extends DeriusAbility
 	@Override
 	public void onDeactivate(DPlayer dplayer, Object other)
 	{
-		dplayer.msg("deactivate start");
 		if ( ! dplayer.isPlayer()) throw new RuntimeException("isn't player");
-		if ( ! (other instanceof ItemStack)) throw new RuntimeException("isn't itemstack");
-		ItemStack inHand = (ItemStack) other;
 		
-		dplayer.msg(String.valueOf(inHand == dplayer.getPlayer().getItemInHand()));
+		SuperMiningItemManager.get().clearInventory(dplayer.getPlayer().getInventory());
 		
-		int lvlBefore = inHand.getEnchantmentLevel(Enchantment.DIG_SPEED);
-		dplayer.msg("lvlBefore:" + String.valueOf(lvlBefore));
-		dplayer.msg("buff:" + String.valueOf(MiningSkill.getEfficiencyBuff()));
-		int lvl = lvlBefore - MiningSkill.getEfficiencyBuff();
-		dplayer.msg("lvl:" + String.valueOf(lvl));
-		if (lvl < 0) lvl = 0;
-		dplayer.msg("lvl:" + String.valueOf(lvl));
-		
-		
-		ItemMeta meta = inHand.getItemMeta();
-		dplayer.msg("meta:" + String.valueOf(meta));
-		List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(1);
-		lore.remove(Txt.parse("<lime>Derius Ability Tool"));
-		meta.setLore(lore);
-		
-		meta.removeEnchant(Enchantment.DIG_SPEED);
-		if (lvl > 0) meta.addEnchant(Enchantment.DIG_SPEED, lvl, true);
-		
-		
-		dplayer.msg("meta:" + String.valueOf(meta));
-		inHand.setItemMeta(meta);
 		dplayer.getPlayer().updateInventory();
-		dplayer.msg("deactivate end");
+		
+		return;
 	}
 
 }

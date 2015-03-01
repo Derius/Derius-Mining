@@ -23,18 +23,21 @@ public class DeriusMining extends MassivePlugin
 	@Override
 	public void onEnable()
 	{
-		if ( ! super.preEnable()) return;
+		if ( ! this.preEnable()) return;
 		
 		MiningSkill.get().register();
 		DoubleDrop.get().register();
 		SuperMining.get().register();
+		CarefulMining.get().register();
 		
 		MiningEngine.get().activate();
+		
+		SuperMiningItemManager.get().register();
 		
 		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
 		DeriusAPI.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
 		
-		
-		super.postEnable();
+		this.postEnable();
 	}
+	
 }
