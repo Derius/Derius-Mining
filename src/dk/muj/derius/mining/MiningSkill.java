@@ -4,11 +4,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
-import dk.muj.derius.entity.skill.DeriusSkill;
+import dk.muj.derius.api.skill.DeriusSkill;
 
 public class MiningSkill extends DeriusSkill
 {
@@ -18,7 +19,6 @@ public class MiningSkill extends DeriusSkill
 	
 	private static MiningSkill i = new MiningSkill();
 	public static MiningSkill get() { return i; }
-	
 	
 	public MiningSkill()
 	{		
@@ -60,6 +60,14 @@ public class MiningSkill extends DeriusSkill
 	{
 		return "derius:mining";
 	}
+	
+
+	@Override
+	public Plugin getPlugin()
+	{
+		return DeriusMining.get();
+	}
+
 	
 	// -------------------------------------------- //
 	// CONFIG

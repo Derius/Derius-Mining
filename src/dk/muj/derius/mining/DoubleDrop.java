@@ -6,11 +6,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import dk.muj.derius.api.DPlayer;
 import dk.muj.derius.api.DeriusAPI;
-import dk.muj.derius.api.Skill;
-import dk.muj.derius.entity.ability.DeriusAbility;
-import dk.muj.derius.util.SkillUtil;
+import dk.muj.derius.api.ability.DeriusAbility;
+import dk.muj.derius.api.player.DPlayer;
+import dk.muj.derius.api.skill.Skill;
+import dk.muj.derius.api.util.SkillUtil;
 
 public class DoubleDrop extends DeriusAbility
 {

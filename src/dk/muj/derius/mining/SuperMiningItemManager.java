@@ -30,6 +30,7 @@ public class SuperMiningItemManager implements SpecialItemManager
 	public ItemStack toSpecial(ItemStack item)
 	{
 		Validate.notNull(item, "item mustn't be null");
+		if (this.matches(item)) return item;
 		if (this.isSpecial(item)) return item;
 		// Meta
 		ItemMeta meta = item.getItemMeta();

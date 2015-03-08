@@ -36,6 +36,8 @@ public class DeriusMining extends MassivePlugin
 		
 		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
 		DeriusAPI.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
+		DeriusAPI.getBlockMixin().addBlockTypesToListenFor(MiningSkill.getDoubleDropBlocks());
+		
 		
 		this.postEnable();
 	}

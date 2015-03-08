@@ -10,9 +10,9 @@ import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-import dk.muj.derius.api.DPlayer;
-import dk.muj.derius.api.Skill;
-import dk.muj.derius.entity.ability.DeriusAbility;
+import dk.muj.derius.api.ability.DeriusAbility;
+import dk.muj.derius.api.player.DPlayer;
+import dk.muj.derius.api.skill.Skill;
 import dk.muj.derius.req.ReqCooldownIsExpired;
 
 public class SuperMining extends DeriusAbility
@@ -89,7 +89,7 @@ public class SuperMining extends DeriusAbility
 	@Override
 	public void onDeactivate(DPlayer dplayer, Object other)
 	{
-		if ( ! dplayer.isPlayer()) throw new RuntimeException("isn't player");
+		if ( ! dplayer.isPlayer()) return;
 		
 		SuperMiningItemManager.get().clearInventory(dplayer.getPlayer().getInventory());
 		

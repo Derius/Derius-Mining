@@ -6,10 +6,10 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-import dk.muj.derius.api.DPlayer;
-import dk.muj.derius.api.Skill;
-import dk.muj.derius.entity.ability.DeriusAbility;
-import dk.muj.derius.util.LevelUtil;
+import dk.muj.derius.api.ability.DeriusAbility;
+import dk.muj.derius.api.player.DPlayer;
+import dk.muj.derius.api.skill.Skill;
+import dk.muj.derius.api.util.LevelUtil;
 
 public class CarefulMining extends DeriusAbility
 {
