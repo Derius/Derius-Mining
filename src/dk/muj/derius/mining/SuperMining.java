@@ -10,12 +10,12 @@ import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 
-import dk.muj.derius.api.ability.DeriusAbility;
+import dk.muj.derius.api.ability.AbilityAbstract;
 import dk.muj.derius.api.player.DPlayer;
+import dk.muj.derius.api.req.ReqCooldownIsExpired;
 import dk.muj.derius.api.skill.Skill;
-import dk.muj.derius.req.ReqCooldownIsExpired;
 
-public class SuperMining extends DeriusAbility
+public class SuperMining extends AbilityAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

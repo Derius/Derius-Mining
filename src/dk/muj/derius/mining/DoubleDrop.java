@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import dk.muj.derius.api.DeriusAPI;
-import dk.muj.derius.api.ability.DeriusAbility;
+import dk.muj.derius.api.ability.AbilityAbstract;
 import dk.muj.derius.api.player.DPlayer;
 import dk.muj.derius.api.skill.Skill;
 import dk.muj.derius.api.util.SkillUtil;
 
-public class DoubleDrop extends DeriusAbility
+public class DoubleDrop extends AbilityAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

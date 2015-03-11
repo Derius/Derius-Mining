@@ -9,9 +9,9 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
-import dk.muj.derius.api.skill.DeriusSkill;
+import dk.muj.derius.api.skill.SkillAbstract;
 
-public class MiningSkill extends DeriusSkill
+public class MiningSkill extends SkillAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
