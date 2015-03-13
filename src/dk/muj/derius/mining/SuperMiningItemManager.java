@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-import dk.muj.derius.inventory.SpecialItemManager;
+import dk.muj.derius.api.inventory.SpecialItemManager;
 
 public class SuperMiningItemManager implements SpecialItemManager
 {
