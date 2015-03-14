@@ -4,7 +4,6 @@ import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.util.MUtil;
 
 import dk.muj.derius.api.DeriusAPI;
-import dk.muj.derius.util.Listener;
 
 public class DeriusMining extends MassivePlugin
 {
@@ -34,7 +33,7 @@ public class DeriusMining extends MassivePlugin
 		
 		SuperMiningItemManager.get().register();
 		
-		Listener.registerTools(MUtil.PICKAXE_MATERIALS);
+		DeriusAPI.registerPreparableTools(MUtil.PICKAXE_MATERIALS);
 		DeriusAPI.addBlockTypesToListenFor(MiningSkill.getExpGain().keySet());
 		DeriusAPI.addBlockTypesToListenFor(MiningSkill.getDoubleDropBlocks());
 		
