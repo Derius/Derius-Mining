@@ -56,6 +56,5 @@ public class CarefulMining extends AbilityDurabilityMultiplier
 	{
 		return "Pickaxe";
 	}
-
 	
 }
