@@ -2,7 +2,7 @@ name: Derius-Mining
 version: 0.1_dev
 main: dk.muj.derius.mining.DeriusMining
 #website: http://muj.dk/Derius/Mining
-authors: [madus, ulumulu1510]
-description: §eDerius mining
+authors: [Madus, Ulumulu1510]
+description: <g>Derius Mining is a mining skill for the Derius skill framework.
 depend: [Derius-Core]
 load: startup

@@ -5,7 +5,7 @@ import com.massivecraft.massivecore.util.MUtil;
 
 import dk.muj.derius.api.DeriusAPI;
 
-public class DeriusMining extends MassivePlugin
+public final class DeriusMining extends MassivePlugin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -13,7 +13,7 @@ public class DeriusMining extends MassivePlugin
 	
 	private static DeriusMining i;
 	public static DeriusMining get() { return i; }
-	public DeriusMining() { i = this; }
+	private DeriusMining() { i = this; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: PLUGIN
