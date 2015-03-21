@@ -19,8 +19,7 @@ public class SuperMining extends AbilitySpecialItem
 	
 	private static SuperMining i = new SuperMining();
 	public static SuperMining get() { return i; }
-	
-	public SuperMining()
+	private SuperMining()
 	{
 		this.setDesc("Mines faster");
 		
@@ -66,6 +65,5 @@ public class SuperMining extends AbilitySpecialItem
 	{
 		return MiningSkill.getSuperMiningBlocks();
 	}
-
 
 }

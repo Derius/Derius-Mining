@@ -18,7 +18,7 @@ public class MiningExpGain implements BlockBreakExpGain
    
 	private static MiningExpGain i = new MiningExpGain();
 	public static MiningExpGain get() { return i; }
-	private MiningExpGain() { }
+	private MiningExpGain() {}
 
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -18,10 +18,7 @@ public class CarefulMining extends AbilityDurabilityMultiplier
    
 	private static CarefulMining i = new CarefulMining();
 	public static CarefulMining get() { return i; }
-	private CarefulMining()
-	{
-		this.setName("Careful Mining");
-	}
+	private CarefulMining() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

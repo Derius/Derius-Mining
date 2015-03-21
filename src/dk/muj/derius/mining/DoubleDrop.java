@@ -17,11 +17,7 @@ public class DoubleDrop extends AbilityDoubleDrop
 	
 	private static DoubleDrop i = new DoubleDrop();
 	public static DoubleDrop get() { return i; }
-
-	public DoubleDrop()
-	{
-
-	}
+	private DoubleDrop() { }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
