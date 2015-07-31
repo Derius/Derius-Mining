@@ -29,7 +29,7 @@ public final class DeriusMining extends MassivePlugin
 		SuperMining.get().register();
 		CarefulMining.get().register();
 		
-		DeriusAPI.registerExpGain(MiningExpGain.get());
+		MiningExpGain.get().register();
 		SuperMiningItemManager.get().register();
 		
 		DeriusAPI.registerPreparableTools(MUtil.PICKAXE_MATERIALS);
